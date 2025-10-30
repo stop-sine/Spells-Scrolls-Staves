@@ -1,6 +1,13 @@
+using System;
+using System.Data;
+using DynamicData;
+using Noggog;
 using Mutagen.Bethesda;
+using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Synthesis;
+using Mutagen.Bethesda.FormKeys.SkyrimSE;
 using Mutagen.Bethesda.Skyrim;
+
 
 namespace SpellsScrollsStaves
 {
