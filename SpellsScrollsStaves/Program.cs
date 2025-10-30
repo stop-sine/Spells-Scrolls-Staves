@@ -2,7 +2,7 @@ using Mutagen.Bethesda;
 using Mutagen.Bethesda.Synthesis;
 using Mutagen.Bethesda.Skyrim;
 
-namespace Spells-Scrolls-Staves
+namespace SpellsScrollsStaves
 {
     public class Program
     {
@@ -10,7 +10,7 @@ namespace Spells-Scrolls-Staves
         {
             return await SynthesisPipeline.Instance
                 .AddPatch<ISkyrimMod, ISkyrimModGetter>(RunPatch)
-                .SetTypicalOpen(GameRelease.SkyrimSE, "YourPatcher.esp")
+                .SetTypicalOpen(GameRelease.SkyrimSE, "SSS-TnE.esp")
                 .Run(args);
         }
 
