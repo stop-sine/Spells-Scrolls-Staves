@@ -40,8 +40,9 @@ namespace SpellsScrollsStaves
         /// <returns>True if the scroll passes the filter; otherwise, false.</returns>
         public static bool ScrollFilter([NotNull] IScrollGetter scroll)
         {
-            if (!scroll.Name?.String?.Contains("Scroll") ?? false) return false;
-            return true;
+            if (scroll.Name?.String?.Contains("jzargo", StringComparison.OrdinalIgnoreCase) ?? false) return false;
+            if (scroll.Name?.String?.Contains("Scroll") ?? false) return true;
+            return false;
         }
 
         /// <summary>
