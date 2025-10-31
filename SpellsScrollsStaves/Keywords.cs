@@ -1,136 +1,154 @@
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
+using Mutagen.Bethesda.FormKeys.SkyrimSE;
 
 namespace SpellsScrollsStaves
 {
     public class Keywords
     {
-        public static readonly Dictionary<string, IFormLinkGetter<IKeywordGetter>> TomeSchools = new() {
-            {"Alteration", FormKey.Factory("00084E:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Conjuration", FormKey.Factory("00084F:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Destruction", FormKey.Factory("000850:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Illusion", FormKey.Factory("000851:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Restoration", FormKey.Factory("000852:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()}
+        private const string TemplateEsp = "Spells Scrolls Staves - TnE - TEMPLATE.esp";
+
+        // Define perk metadata once
+        private static readonly Dictionary<IFormLinkGetter<IPerkGetter>, (string School, string Level)> PerkMetadata = new()
+        {
+            // Alteration
+            {Skyrim.Perk.AlterationNovice00, ("Alteration", "Novice")},
+            {Skyrim.Perk.AlterationApprentice25, ("Alteration", "Apprentice")},
+            {Skyrim.Perk.AlterationAdept50, ("Alteration", "Adept")},
+            {Skyrim.Perk.AlterationExpert75, ("Alteration", "Expert")},
+            {Skyrim.Perk.AlterationMaster100, ("Alteration", "Master")},
+            
+            // Conjuration
+            {Skyrim.Perk.ConjurationNovice00, ("Conjuration", "Novice")},
+            {Skyrim.Perk.ConjurationApprentice25, ("Conjuration", "Apprentice")},
+            {Skyrim.Perk.ConjurationAdept50, ("Conjuration", "Adept")},
+            {Skyrim.Perk.ConjurationExpert75, ("Conjuration", "Expert")},
+            {Skyrim.Perk.ConjurationMaster100, ("Conjuration", "Master")},
+            
+            // Destruction
+            {Skyrim.Perk.DestructionNovice00, ("Destruction", "Novice")},
+            {Skyrim.Perk.DestructionApprentice25, ("Destruction", "Apprentice")},
+            {Skyrim.Perk.DestructionAdept50, ("Destruction", "Adept")},
+            {Skyrim.Perk.DestructionExpert75, ("Destruction", "Expert")},
+            {Skyrim.Perk.DestructionMaster100, ("Destruction", "Master")},
+            
+            // Illusion
+            {Skyrim.Perk.IllusionNovice00, ("Illusion", "Novice")},
+            {Skyrim.Perk.IllusionApprentice25, ("Illusion", "Apprentice")},
+            {Skyrim.Perk.IllusionAdept50, ("Illusion", "Adept")},
+            {Skyrim.Perk.IllusionExpert75, ("Illusion", "Expert")},
+            {Skyrim.Perk.IllusionMaster100, ("Illusion", "Master")},
+            
+            // Restoration
+            {Skyrim.Perk.RestorationNovice00, ("Restoration", "Novice")},
+            {Skyrim.Perk.RestorationApprentice25, ("Restoration", "Apprentice")},
+            {Skyrim.Perk.RestorationAdept50, ("Restoration", "Adept")},
+            {Skyrim.Perk.RestorationExpert75, ("Restoration", "Expert")},
+            {Skyrim.Perk.RestorationMaster100, ("Restoration", "Master")}
         };
 
-        public static readonly Dictionary<string, IFormLinkGetter<IKeywordGetter>> TomeLevels = new() {
-            {"Novice", FormKey.Factory("000853:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Apprentice", FormKey.Factory("000854:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Adept", FormKey.Factory("000855:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Expert", FormKey.Factory("000856:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Master", FormKey.Factory("000857:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()}
-        };
+        // FormKey ranges for each category
+        private static class FormKeys
+        {
+            // Tome Schools: 084E-0852 (one per school)
+            public static readonly Dictionary<string, string> TomeSchools = new()
+            {
+                {"Alteration", "00084E"},
+                {"Conjuration", "00084F"},
+                {"Destruction", "000850"},
+                {"Illusion", "000851"},
+                {"Restoration", "000852"}
+            };
 
-        public static readonly Dictionary<(string, string), IFormLinkGetter<IKeywordGetter>> TomeTypes = new() {
-            {("Novice", "Alteration"), FormKey.Factory("000858:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Alteration"), FormKey.Factory("000859:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Alteration"), FormKey.Factory("00085A:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Alteration"), FormKey.Factory("00085B:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Alteration"), FormKey.Factory("00085C:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
+            // Tome Levels: 0853-0857 (one per level)
+            public static readonly Dictionary<string, string> TomeLevels = new()
+            {
+                {"Novice", "000853"},
+                {"Apprentice", "000854"},
+                {"Adept", "000855"},
+                {"Expert", "000856"},
+                {"Master", "000857"}
+            };
 
-            {("Novice", "Conjuration"), FormKey.Factory("00085D:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Conjuration"), FormKey.Factory("00085E:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Conjuration"), FormKey.Factory("00085F:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Conjuration"), FormKey.Factory("000860:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Conjuration"), FormKey.Factory("000861:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
+            // Tome Types: 0858-0870 (5 schools × 5 levels)
+            public const int TomeTypesBase = 0x858;
 
-            {("Novice", "Destruction"), FormKey.Factory("000862:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Destruction"), FormKey.Factory("000863:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Destruction"), FormKey.Factory("000864:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Destruction"), FormKey.Factory("000865:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Destruction"), FormKey.Factory("000866:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
+            // Scroll Schools: 082B-082F (one per school)
+            public static readonly Dictionary<string, string> ScrollSchools = new()
+            {
+                {"Alteration", "00082B"},
+                {"Conjuration", "00082C"},
+                {"Destruction", "00082D"},
+                {"Illusion", "00082E"},
+                {"Restoration", "00082F"}
+            };
 
-            {("Novice", "Illusion"), FormKey.Factory("000867:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Illusion"), FormKey.Factory("000868:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Illusion"), FormKey.Factory("000869:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Illusion"), FormKey.Factory("00086A:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Illusion"), FormKey.Factory("00086B:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
+            // Scroll Types: 0812-082A (5 schools × 5 levels)
+            public const int ScrollTypesBase = 0x812;
 
-            {("Novice", "Restoration"), FormKey.Factory("00086C:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Restoration"), FormKey.Factory("00086D:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Restoration"), FormKey.Factory("00086E:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Restoration"), FormKey.Factory("00086F:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Restoration"), FormKey.Factory("000870:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-        };
+            // Staff Schools: 0849-084D (one per school)
+            public static readonly Dictionary<string, string> StaffSchools = new()
+            {
+                {"Alteration", "000849"},
+                {"Conjuration", "00084A"},
+                {"Destruction", "00084B"},
+                {"Illusion", "00084C"},
+                {"Restoration", "00084D"}
+            };
 
-        public static readonly Dictionary<string, IFormLinkGetter<IKeywordGetter>> ScrollSchools = new() {
-            {"Alteration", FormKey.Factory("00082B:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Conjuration", FormKey.Factory("00082C:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Destruction", FormKey.Factory("00082D:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Illusion", FormKey.Factory("00082E:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Restoration", FormKey.Factory("000882F:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()}
-        };
+            // Staff Types: 0830-0848 (5 schools × 5 levels)
+            public const int StaffTypesBase = 0x830;
+        }
 
-        public static readonly Dictionary<(string, string), IFormLinkGetter<IKeywordGetter>> ScrollTypes = new() {
-            {("Novice", "Alteration"), FormKey.Factory("000812:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Alteration"), FormKey.Factory("000813:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Alteration"), FormKey.Factory("000814:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Alteration"), FormKey.Factory("000815:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Alteration"), FormKey.Factory("000816:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
+        private static readonly string[] SchoolOrder = ["Alteration", "Conjuration", "Destruction", "Illusion", "Restoration"];
+        private static readonly string[] LevelOrder = ["Novice", "Apprentice", "Adept", "Expert", "Master"];
 
-            {("Novice", "Conjuration"), FormKey.Factory("000817:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Conjuration"), FormKey.Factory("000818:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Conjuration"), FormKey.Factory("000819:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Conjuration"), FormKey.Factory("00081A:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Conjuration"), FormKey.Factory("00081B:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
+        private static int GetTypeIndex(string school, string level)
+        {
+            int schoolIndex = Array.IndexOf(SchoolOrder, school);
+            int levelIndex = Array.IndexOf(LevelOrder, level);
+            return schoolIndex * 5 + levelIndex;
+        }
 
-            {("Novice", "Destruction"), FormKey.Factory("00081C:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Destruction"), FormKey.Factory("00081D:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Destruction"), FormKey.Factory("00081E:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Destruction"), FormKey.Factory("00081F:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Destruction"), FormKey.Factory("000820:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
+        private static IFormLinkGetter<IKeywordGetter> CreateKeywordLink(string formKeyStr)
+        {
+            return FormKey.Factory($"{formKeyStr}:{TemplateEsp}").ToLinkGetter<IKeywordGetter>();
+        }
 
-            {("Novice", "Illusion"), FormKey.Factory("000821:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Illusion"), FormKey.Factory("000822:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Illusion"), FormKey.Factory("000823:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Illusion"), FormKey.Factory("000824:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Illusion"), FormKey.Factory("000825:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
+        // Public dictionaries built dynamically
+        public static readonly Dictionary<IFormLinkGetter<IPerkGetter>, IFormLinkGetter<IKeywordGetter>> TomeSchools =
+            PerkMetadata.ToDictionary(
+                kvp => kvp.Key,
+                kvp => CreateKeywordLink(FormKeys.TomeSchools[kvp.Value.School]));
 
-            {("Novice", "Restoration"), FormKey.Factory("000826:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Restoration"), FormKey.Factory("000827:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Restoration"), FormKey.Factory("000828:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Restoration"), FormKey.Factory("000829:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Restoration"), FormKey.Factory("00082A:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-        };
+        public static readonly Dictionary<IFormLinkGetter<IPerkGetter>, IFormLinkGetter<IKeywordGetter>> TomeLevels =
+            PerkMetadata.ToDictionary(
+                kvp => kvp.Key,
+                kvp => CreateKeywordLink(FormKeys.TomeLevels[kvp.Value.Level]));
 
-        public static readonly Dictionary<string, IFormLinkGetter<IKeywordGetter>> StaffSchools = new() {
-            {"Alteration", FormKey.Factory("000849:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Conjuration", FormKey.Factory("00084A:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Destruction", FormKey.Factory("00084B:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Illusion", FormKey.Factory("00084C:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {"Restoration", FormKey.Factory("000884D:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()}
-        };
+        public static readonly Dictionary<IFormLinkGetter<IPerkGetter>, IFormLinkGetter<IKeywordGetter>> TomeTypes =
+            PerkMetadata.ToDictionary(
+                kvp => kvp.Key,
+                kvp => CreateKeywordLink($"{FormKeys.TomeTypesBase + GetTypeIndex(kvp.Value.School, kvp.Value.Level):X6}"));
 
-        public static readonly Dictionary<(string, string), IFormLinkGetter<IKeywordGetter>> StaffTypes = new() {
-            {("Novice", "Alteration"), FormKey.Factory("000830:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Alteration"), FormKey.Factory("000831:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Alteration"), FormKey.Factory("000832:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Alteration"), FormKey.Factory("000833:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Alteration"), FormKey.Factory("000834:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
+        public static readonly Dictionary<IFormLinkGetter<IPerkGetter>, IFormLinkGetter<IKeywordGetter>> ScrollSchools =
+            PerkMetadata.ToDictionary(
+                kvp => kvp.Key,
+                kvp => CreateKeywordLink(FormKeys.ScrollSchools[kvp.Value.School]));
 
-            {("Novice", "Conjuration"), FormKey.Factory("000835:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Conjuration"), FormKey.Factory("000836:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Conjuration"), FormKey.Factory("000837:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Conjuration"), FormKey.Factory("000838:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Conjuration"), FormKey.Factory("000839:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
+        public static readonly Dictionary<IFormLinkGetter<IPerkGetter>, IFormLinkGetter<IKeywordGetter>> ScrollTypes =
+            PerkMetadata.ToDictionary(
+                kvp => kvp.Key,
+                kvp => CreateKeywordLink($"{FormKeys.ScrollTypesBase + GetTypeIndex(kvp.Value.School, kvp.Value.Level):X6}"));
 
-            {("Novice", "Destruction"), FormKey.Factory("00083A:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Destruction"), FormKey.Factory("00083B:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Destruction"), FormKey.Factory("00083C:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Destruction"), FormKey.Factory("00083D:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Destruction"), FormKey.Factory("00083E:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
+        public static readonly Dictionary<IFormLinkGetter<IPerkGetter>, IFormLinkGetter<IKeywordGetter>> StaffSchools =
+            PerkMetadata.ToDictionary(
+                kvp => kvp.Key,
+                kvp => CreateKeywordLink(FormKeys.StaffSchools[kvp.Value.School]));
 
-            {("Novice", "Illusion"), FormKey.Factory("00083F:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Illusion"), FormKey.Factory("000840:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Illusion"), FormKey.Factory("000841:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Illusion"), FormKey.Factory("000842:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Illusion"), FormKey.Factory("000843:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-
-            {("Novice", "Restoration"), FormKey.Factory("000844:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Apprentice", "Restoration"), FormKey.Factory("000845:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Adept", "Restoration"), FormKey.Factory("000846:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Expert", "Restoration"), FormKey.Factory("000847:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-            {("Master", "Restoration"), FormKey.Factory("000848:Spells Scrolls Staves - TnE - TEMPLATE.esp").ToLinkGetter<IKeywordGetter>()},
-        };
+        public static readonly Dictionary<IFormLinkGetter<IPerkGetter>, IFormLinkGetter<IKeywordGetter>> StaffTypes =
+            PerkMetadata.ToDictionary(
+                kvp => kvp.Key,
+                kvp => CreateKeywordLink($"{FormKeys.StaffTypesBase + GetTypeIndex(kvp.Value.School, kvp.Value.Level):X6}"));
     }
 }
